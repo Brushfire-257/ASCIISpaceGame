@@ -1,0 +1,1 @@
+# Will contain a class for all the player atributes.
