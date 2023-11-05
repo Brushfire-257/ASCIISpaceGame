@@ -8,3 +8,7 @@ Ground / Space Mining
 Economys
 Saving system
 Multiplayer?
+
+# Planned Features for deadline
+Ground Movement
+Ground Trading
