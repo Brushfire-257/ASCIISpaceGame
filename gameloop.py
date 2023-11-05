@@ -17,7 +17,6 @@ class GameLoop():
         self.length = 0
         keyboard.Listener(on_press=self.on_key_press, on_release=lambda _: None).start()
 
-
     def do_move(self, direction, length):
         # Handle the move command
         if (direction == 'right' and length > 0):
@@ -43,10 +42,10 @@ class GameLoop():
     def run_game(self):
     # Runs game loop here, continuously checking for keypresses
         while True:
+            print("\r", end="")
             for i in range(self.length):
                 print("#", end="")
-            print("@")
-            clear()
+            print("@ ", end="")
 
 
 if __name__ == "__main__":
