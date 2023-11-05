@@ -34,7 +34,6 @@ class GameLoop():
             return
         # Regular key handling
         if key.char == "a":
-            # something
             self.do_move('right', self.length)
         elif key.char == "d":
             self.do_move('left', self.length)
