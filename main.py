@@ -13,4 +13,4 @@ def main():
 player = main()
 
 game = GameLoop(player, WORLD)
-game.cmdloop()
+game.run_game()
