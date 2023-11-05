@@ -21,9 +21,9 @@ class GameLoop():
     def do_move(self, direction, length):
         # Handle the move command
         if (direction == 'right' and length > 0):
-            length = length - 1
+            self.length = self.length - 1
         elif (direction == 'left'):
-            length = length + 1
+            self.length = self.length + 1
         pass
 
     def on_key_press(self, key):
