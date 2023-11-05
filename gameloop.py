@@ -40,6 +40,7 @@ class GameLoop():
             self.do_move('left', self.length)
 
     def run_game(self):
+        print('\033[?25l', end="") # Hides the Cursor!
     # Runs game loop here, continuously checking for keypresses
         while True:
             print("\r", end="")
