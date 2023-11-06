@@ -15,7 +15,7 @@ class GameLoop():
         self.me = me
         self.rooms = rooms
         self.length = 0
-        keyboard.Listener(on_press=self.on_key_press, on_release=lambda _: None).start()
+        keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release).start()
 
     def do_move(self, direction, length):
         # Handle the move command
@@ -24,19 +24,25 @@ class GameLoop():
         elif (direction == 'left'):
             self.length = self.length + 1
         pass
+    
+    def on_key_release(self, key):
+        #print(key.char + " key released!")
+        return
 
     def on_key_press(self, key):
         # Special key handling
         if not hasattr(key, "char"):
             if key == keyboard.Key.esc:
-                # something
                 print('esc pressed.')
+                self.exit_game()
             return
         # Regular key handling
         if key.char == "a":
             self.do_move('right', self.length)
         elif key.char == "d":
             self.do_move('left', self.length)
+    def exit_game(self):
+        return
 
     def run_game(self):
         print('\033[?25l', end="") # Hides the Cursor!
