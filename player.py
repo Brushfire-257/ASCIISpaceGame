@@ -13,3 +13,4 @@ class Camera:
         self.y = y
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.reset_color = "\e[0;30m" # White ANSI color code

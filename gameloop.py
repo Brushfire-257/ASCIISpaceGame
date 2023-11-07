@@ -3,7 +3,7 @@
 from pynput import keyboard
 import cmd
 from player import Player, Camera
-import world
+from world import WORLD
 import os
 
 def clear():
@@ -53,6 +53,53 @@ class GameLoop():
                 print("#", end="")
             print("@ ", end="")
 
+    def draw_map_layer(self, room_name, camera):
+        room = WORLD.get(room_name, {})
+        map_rows = room.get('map', [])
+        colors = room.get('colors', {})
+
+        rendered_area = []
+
+        for y in range(camera.y - (camera.screen_height / 2), camera.y + (camera.screen_height / 2)):
+            row = []
+            for x in range(camera.x - (camera.screen_width / 2), camera.x - (camera.screen_width / 2)):
+                if 0 <= y < len(map_rows) and 0 <= x < len(map_rows[y]):
+                    char = map_rows[y][x]
+                    color = colors.get(char, '\033[0m')  # Default color if character not found
+                    row.append(f"{color}{char}{camera.reset_color}")
+                else:
+                    row.append(' ')  # Display empty space for areas outside the map
+            rendered_area.append(''.join(row))
+        return rendered_area
+    
+    def draw_player_layer(self, camera, player, rendered_area): # GPT made function (note: fix this later...)
+        camera_player_x = player.x - camera.x + (camera.screen_width / 2)
+        camera_player_y = player.y - camera.y + (camera.screen_height / 2)
+
+        # Ensure the player is within the visible area
+        if 0 <= camera_player_y < len(rendered_area) and 0 <= camera_player_x < len(rendered_area[camera_player_y]):
+            rendered_area[camera_player_y] = (
+                rendered_area[camera_player_y][:camera_player_x] + 
+                f"{player.color}{player.char}{camera.reset_color}" + 
+                rendered_area[camera_player_y][camera_player_x + 1:]
+            )
+
+        return rendered_area
+    
+    def get_visible_screen(self, camera, player, room_name):
+        return self.draw_player_layer(Camera, Player, (self.draw_map_layer(room_name, Camera)))
+    
+    def player_movement(self, direction, camera, player):
+        if(direction == 'up'):
+            return
+        elif(direction == 'down'):
+            return
+        elif(direction == 'right'):
+            return
+        elif(direction == 'left'):
+            return
+        
+        return
 
 if __name__ == "__main__":
     print("Run main.py you silly goose.")
