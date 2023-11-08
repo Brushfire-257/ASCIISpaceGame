@@ -16,6 +16,7 @@ class GameLoop():
         self.camera = camera
         self.rooms = rooms
         self.length = 0
+        self.exit_game = 0
         keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release).start()
 
     def do_move(self, direction, length):
@@ -34,8 +35,8 @@ class GameLoop():
         # Special key handling
         if not hasattr(key, "char"):
             if key == keyboard.Key.esc:
-                print('esc pressed.')
-                self.exit_game()
+                print('Exiting...')
+                self.exit_game = 1
             return
         # Regular key handling
         if key.char == "a":
@@ -48,83 +49,100 @@ class GameLoop():
             self.player_movement('up', Camera, self.player)
         elif key.char == 's':
             self.player_movement('down', Camera, self.player)
-        
-    def exit_game(self):
-        return
 
     def run_game(self):
         print('\033[?25l', end="") # Hides the Cursor!
     # Runs game loop here, continuously checking for keypresses
         while True:
+            if self.exit_game == 1:
+                break
             print("\r", end="")
             for i in range(self.length):
                 print("#", end="")
             print("@ ", end="")
 
-    def draw_map_layer(self, room_name, camera):
+    def draw_map_layer(self, room_name):
         room = WORLD.get(room_name, {})
         map_rows = room.get('map', [])
         colors = room.get('colors', {})
 
         rendered_area = []
 
-        for y in range(camera.y - (camera.screen_height // 2), camera.y + (camera.screen_height // 2)):
+        for y in range(self.camera.y - (self.camera.screen_height // 2), self.camera.y + (self.camera.screen_height // 2)):
             row = []
-            for x in range(camera.x - (camera.screen_width // 2), camera.x + (camera.screen_width // 2)):
+            for x in range(self.camera.x - (self.camera.screen_width // 2), self.camera.x + (self.camera.screen_width // 2)):
                 if 0 <= y < len(map_rows) and 0 <= x < len(map_rows[y]):
                     char = map_rows[y][x]
                     color = colors.get(char, '\033[0m')  # Default color if character not found
-                    row.append(f"{color}{char}{camera.reset_color}")
+                    row.append(f"{color}{char}{self.camera.reset_color}")
                 else:
                     row.append(' ')  # Display empty space for areas outside the map
             rendered_area.append(''.join(row))
         return rendered_area
     
-    def draw_player_layer(self, camera, player, rendered_area): # GPT made function (note: fix this later...)
-        camera_player_x = player.x - camera.x + (camera.screen_width // 2)
-        camera_player_y = player.y - camera.y + (camera.screen_height // 2)
+    def draw_player_layer(self, rendered_area): # GPT made function (note: fix this later...)
+        camera_player_x = self.player.x - self.camera.x + (self.camera.screen_width // 2)
+        camera_player_y = self.player.y - self.camera.y + (self.camera.screen_height // 2)
 
         # Ensure the player is within the visible area
         if 0 <= camera_player_y < len(rendered_area) and 0 <= camera_player_x < len(rendered_area[camera_player_y]):
             rendered_area[camera_player_y] = (
                 rendered_area[camera_player_y][:camera_player_x] + 
-                f"{player.color}{player.char}{camera.reset_color}" + 
+                f"{self.player.color}{self.player.char}{self.camera.reset_color}" + 
                 rendered_area[camera_player_y][camera_player_x + 1:]
             )
 
         return rendered_area
     
-    def get_visible_screen(self, camera, player, room_name):
-        return self.draw_player_layer(Camera, Player, (self.draw_map_layer(room_name, Camera)))
+    def get_visible_screen(self, room_name):
+        return self.draw_player_layer(self.draw_map_layer(room_name))
+    
+    def camera_controller(self):
+        camera_player_x = self.player.x - self.camera.x + (self.camera.screen_width // 2)
+        camera_player_y = self.player.y - self.camera.y + (self.camera.screen_height // 2)
+
+        if camera_player_x < self.camera.screen_width // 2:
+            self.camera.x += -1
+        elif camera_player_x > self.camera.screen_width // 2:
+            self.camera.x += 1
+        if camera_player_y < self.camera.screen_height // 2:
+            self.camera.y += -1
+        elif camera_player_y > self.camera.screen_height // 2:
+            self.camera.y += 1
+        return
     
     def player_movement(self, direction, camera, player):
         if(direction == 'up'):
             player.y += -1
+            self.camera_controller()
             print(player.x)
             print(player.y)
-            print(self.draw_map_layer('room1', self.camera))
-            print(self.draw_player_layer(self.camera,self.player,self.draw_map_layer('room1',self.camera)))
+            print(self.draw_map_layer('room1'))
+            print(self.draw_player_layer(self.draw_map_layer('room1')))
             return
         elif(direction == 'down'):
             player.y += 1
+            self.camera_controller()
             print(player.x)
             print(player.y)
-            print(self.draw_map_layer('room1', self.camera))
-            print(self.draw_player_layer(self.camera,self.player,self.draw_map_layer('room1',self.camera)))
+            print(self.draw_map_layer('room1'))
+            print(self.draw_player_layer(self.draw_map_layer('room1')))
             return
         elif(direction == 'right'):
             player.x += -1
+            self.camera_controller()
             print(player.x)
             print(player.y)
-            print(self.draw_map_layer('room1', self.camera))
-            print(self.draw_player_layer(self.camera,self.player,self.draw_map_layer('room1',self.camera)))
+            print(self.draw_map_layer('room1'))
+            print(self.draw_player_layer(self.draw_map_layer('room1')))
             return
         elif(direction == 'left'):
             player.x += 1
+            self.camera_controller()
             print(player.x)
             print(player.y)
-            print(self.draw_map_layer('room1', self.camera))
-            print(self.draw_player_layer(self.camera,self.player,self.draw_map_layer('room1',self.camera)))
+            print(self.draw_map_layer('room1'))
+            print(self.draw_player_layer(self.draw_map_layer('room1')))
             return
         
         return
