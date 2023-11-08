@@ -39,8 +39,15 @@ class GameLoop():
         # Regular key handling
         if key.char == "a":
             self.do_move('right', self.length)
+            self.player_movement('right', Camera, Player)
         elif key.char == "d":
             self.do_move('left', self.length)
+            self.player_movement('left', Camera, Player)
+        elif key.char == 'w':
+            self.player_movement('up', Camera, Player)
+        elif key.char == 's':
+            self.player_movement('down', Camera, Player)
+        
     def exit_game(self):
         return
 
@@ -91,12 +98,24 @@ class GameLoop():
     
     def player_movement(self, direction, camera, player):
         if(direction == 'up'):
+            player.y += 1
+            print(player.x)
+            print(player.y)
             return
         elif(direction == 'down'):
+            player.y += -1
+            print(player.x)
+            print(player.y)
             return
         elif(direction == 'right'):
+            player.x += 1
+            print(player.x)
+            print(player.y)
             return
         elif(direction == 'left'):
+            player.x += -1
+            print(player.x)
+            print(player.y)
             return
         
         return
