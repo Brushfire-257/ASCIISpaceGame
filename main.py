@@ -8,7 +8,7 @@ from world import WORLD
 player = {}
 
 def main():
-    me = Player(1,1,'@','\033[34m')
+    me = Player(1,1,'@','\x1b[33m')
     return me
 
 player = main()

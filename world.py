@@ -8,8 +8,8 @@ WORLD = {
             "___.._"
         ],
         'colors': {
-            '.': '\033[37m',  # Grey color for dots
-            '_': '\033[34m',  # Blue color for underscores
+            '.': '\x1b[37m',  # Grey color for dots
+            '_': '\x1b[34m',  # Blue color for underscores
             # You can add more mappings for different characters here
         }
     },
@@ -21,8 +21,8 @@ WORLD = {
             "#####"
         ],
         'colors': {
-            '#': '\033[32m',  # Green color for walls
-            '_': '\033[34m',  # Blue color for underscores
+            '#': '\x1b[32m',  # Green color for walls
+            '_': '\x1b[34m',  # Blue color for underscores
             # You can add more mappings for different characters here
         }
     },
