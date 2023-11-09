@@ -3,7 +3,7 @@
 from pynput import keyboard
 import cmd
 from player import Player, Camera
-from world import WORLD
+from world import WORLD, GUI
 import os
 
 def clear():
@@ -102,9 +102,32 @@ class GameLoop():
 
         return
 
+    def overwrite_render(self, rendered_area, with_what):
+        overwrite = GUI.get(with_what, {})
+        overwrite_rows = overwrite.get('gui', [])
+        colors = overwrite.get('colors', {})
+
+        new_rendered_area = []
+
+        for y in range(self.camera.screen_height):
+            row = []
+            for x in range(self.camera.screen_width):
+                if 0 <= y < len(overwrite_rows) and 0 <= x < len(overwrite_rows[y]):
+                    char = overwrite_rows[y][x]
+                    color = colors.get(char, '\x1b[0m')  # Default color if character not found
+                    if char == ' ':
+                        row.append(rendered_area[y][x])
+                    else:
+                        row.append(f"{color}{char}{self.camera.reset_color}")
+            #rendered_area.append(row)
+            new_rendered_area.append(row)
+        return new_rendered_area
+
     def print_screen(self):
         clear()
-        for row in self.draw_player_layer(self.draw_map_layer("room1")):
+        print(self.draw_player_layer(self.draw_map_layer("room1")))
+        for row in self.overwrite_render(self.draw_player_layer(self.draw_map_layer("room1")), 'gui1'):
+        #for row in self.draw_player_layer(self.draw_map_layer("room1")):
             print("".join(row))
 
         return

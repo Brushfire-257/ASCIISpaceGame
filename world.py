@@ -3,13 +3,17 @@
 WORLD = {
     'room1': {
         'map': [
-            "___.._",
-            "___.._",
-            "___.._"
+            "#####################",
+            "# - - - - - - - - - #",
+            "# - - - -.-.- - - - #",
+            "# - - - -.-.- - - - #",
+            "# - - - - - - - - - #",
+            "#####################",
         ],
         'colors': {
             '.': '\x1b[37m',  # Grey color for dots
             '_': '\x1b[34m',  # Blue color for underscores
+            '#': '\x1b[33m',  # Green color for walls
             # You can add more mappings for different characters here
         }
     },
@@ -27,4 +31,23 @@ WORLD = {
         }
     },
     # Add more rooms and their map data here
+}
+
+GUI = {
+    'gui1': {
+        'gui': [
+            "##########",
+            "#        #",
+            "#        #",
+            "#        #",
+            "#        #",
+            "##########",
+        ],
+        'colors': {
+            '.': '\x1b[37m',  # Grey color for dots
+            '_': '\x1b[34m',  # Blue color for underscores
+            '#': '\x1b[34m',  # Blue color for walls
+            # You can add more mappings for different characters here
+        }
+    }
 }
