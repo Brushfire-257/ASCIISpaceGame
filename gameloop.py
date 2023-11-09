@@ -45,6 +45,7 @@ class GameLoop():
         while True:
             if self.exit_game == 1:
                 break
+            self.print_screen()
 
     def draw_map_layer(self, room_name):
         room = WORLD.get(room_name, {})
@@ -86,21 +87,23 @@ class GameLoop():
         camera_player_x = self.player.x - self.camera.x + (self.camera.screen_width // 2)
         camera_player_y = self.player.y - self.camera.y + (self.camera.screen_height // 2)
 
-        print(f"{camera_player_x=} {self.player.x=} {self.camera.x=}")
-        print(f"{camera_player_y=} {self.player.y=} {self.camera.y=}")
+        # debug
+        #print(f"{camera_player_x=} {self.player.x=} {self.camera.x=}")
+        #print(f"{camera_player_y=} {self.player.y=} {self.camera.y=}")
 
-        if camera_player_x < (self.camera.screen_width // 2) + 2:
+        if camera_player_x < (self.camera.screen_width // 2):
             self.camera.x += -1
-        elif camera_player_x > (self.camera.screen_width // 2) + 2:
+        elif camera_player_x > (self.camera.screen_width // 2):
             self.camera.x += 1
-        if camera_player_y < (self.camera.screen_height // 2) + 2:
+        if camera_player_y < (self.camera.screen_height // 2):
             self.camera.y += -1
-        elif camera_player_y > (self.camera.screen_height // 2) + 2:
+        elif camera_player_y > (self.camera.screen_height // 2):
             self.camera.y += 1
 
         return
 
     def print_screen(self):
+        clear()
         for row in self.draw_player_layer(self.draw_map_layer("room1")):
             print("".join(row))
 
@@ -121,7 +124,7 @@ class GameLoop():
             self.camera_controller()
         
         # debug
-        self.print_screen()
+        #self.print_screen()
 
         return
 
