@@ -36,17 +36,20 @@ WORLD = {
 GUI = {
     'gui1': {
         'gui': [
-            "##########",
-            "#        #",
-            "#        #",
-            "#        #",
-            "#        #",
-            "##########",
+            "╔════════╗",
+            "║        ║",
+            "║        ║",
+            "║        ║",
+            "║        ║",
+            "╚════════╝",
         ],
         'colors': {
-            '.': '\x1b[37m',  # Grey color for dots
-            '_': '\x1b[34m',  # Blue color for underscores
-            '#': '\x1b[34m',  # Blue color for walls
+            '╚': '\x1b[37m',  # Blue color for gui
+            '═': '\x1b[34m',
+            '║': '\x1b[34m',
+            '╝': '\x1b[34m',
+            '╗': '\x1b[34m',
+            '╔': '\x1b[34m',
             # You can add more mappings for different characters here
         }
     }

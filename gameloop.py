@@ -7,7 +7,9 @@ from world import WORLD, GUI
 import os
 
 def clear():
-    os.system('cls' if os.name=='nt' else 'clear')
+    # os.system('cls' if os.name=='nt' else 'clear')
+    print("\033[%d;%dH" % (0, 0), end="")
+
 
 class GameLoop():
     def __init__(self, player, camera, rooms):
@@ -45,7 +47,7 @@ class GameLoop():
         while True:
             if self.exit_game == 1:
                 break
-            self.print_screen()
+            #self.print_screen()
 
     def draw_map_layer(self, room_name):
         room = WORLD.get(room_name, {})
@@ -66,17 +68,13 @@ class GameLoop():
             rendered_area.append(row)
         return rendered_area
     
-    def draw_player_layer(self, rendered_area): # No Longer GPT yippie.
+    def draw_player_layer(self, rendered_area): # No longer GPT yippie.
         camera_player_x = self.player.x - self.camera.x + (self.camera.screen_width // 2)
         camera_player_y = self.player.y - self.camera.y + (self.camera.screen_height // 2)
 
         # Ensure the player is within the visible area
         if 0 <= camera_player_y < len(rendered_area) and 0 <= camera_player_x < len(rendered_area[camera_player_y]):
-            rendered_area[camera_player_y] = (
-                "".join(rendered_area[camera_player_y][:camera_player_x]) + 
-                f"{self.player.color}{self.player.char}{self.camera.reset_color}" + 
-                "".join(rendered_area[camera_player_y][camera_player_x + 1:])
-            )
+            rendered_area[camera_player_y][camera_player_x] = f"{self.player.color}{self.player.char}{self.camera.reset_color}"
 
         return rendered_area
     
@@ -125,7 +123,6 @@ class GameLoop():
 
     def print_screen(self):
         clear()
-        print(self.draw_player_layer(self.draw_map_layer("room1")))
         for row in self.overwrite_render(self.draw_player_layer(self.draw_map_layer("room1")), 'gui1'):
         #for row in self.draw_player_layer(self.draw_map_layer("room1")):
             print("".join(row))
@@ -136,15 +133,19 @@ class GameLoop():
         if(direction == 'up'):
             player.y += -1
             self.camera_controller()
+            self.print_screen()
         elif(direction == 'down'):
             player.y += 1
             self.camera_controller()
+            self.print_screen()
         elif(direction == 'right'):
             player.x += -1
             self.camera_controller()
+            self.print_screen()
         elif(direction == 'left'):
             player.x += 1
             self.camera_controller()
+            self.print_screen()
         
         # debug
         #self.print_screen()
