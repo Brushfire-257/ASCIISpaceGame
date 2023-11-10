@@ -15,6 +15,10 @@ WORLD = {
             '_': '\x1b[34m',  # Blue color for underscores
             '#': '\x1b[33m',  # Green color for walls
             # You can add more mappings for different characters here
+        },
+        'colisions': {
+            '#': 'player',  # Colision layer
+            # Other collisions here:
         }
     },
     'room2': {
@@ -22,7 +26,7 @@ WORLD = {
             "#####",
             "#_#_#",
             "#_#_#",
-            "#####"
+            "#####",
         ],
         'colors': {
             '#': '\x1b[32m',  # Green color for walls

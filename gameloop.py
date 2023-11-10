@@ -131,25 +131,34 @@ class GameLoop():
     
     def player_movement(self, direction, camera, player):
         if(direction == 'up'):
-            player.y += -1
-            self.camera_controller()
-            self.print_screen()
+            move_by = (0, -1)
         elif(direction == 'down'):
-            player.y += 1
-            self.camera_controller()
-            self.print_screen()
+            move_by = (0, 1)
         elif(direction == 'right'):
-            player.x += -1
-            self.camera_controller()
-            self.print_screen()
+            move_by = (1, 0)
         elif(direction == 'left'):
-            player.x += 1
-            self.camera_controller()
-            self.print_screen()
-        
-        # debug
-        #self.print_screen()
+            move_by = (-1, 0)
 
+        #init but butter
+        room = WORLD.get("room1", {})
+        map = room.get('map', [])
+        colisions = room.get('colisions', [])
+
+        # check for collisions
+        char = map[player.y + move_by[1]][player.x - move_by[0]]
+        if colisions.get(char) == 'player':
+            return
+
+        # debug
+        #print(map[player.y + move_by[1]][player.x - move_by[0]])
+
+        # if no collisions than:
+        self.player.x -= move_by[0]
+        self.player.y += move_by[1]
+
+        self.camera_controller()
+        self.print_screen()
+        
         return
 
 if __name__ == "__main__":
