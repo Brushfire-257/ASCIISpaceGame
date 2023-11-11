@@ -1,4 +1,4 @@
-# Will Contain the entire map for the game in a dictionary.
+# Contains the entire map for the game in a dictionary. Also contains the GUI elements for the game.
 
 WORLD = {
     'room1': {
@@ -48,13 +48,32 @@ GUI = {
             "╚════════╝",
         ],
         'colors': {
-            '╚': '\x1b[37m',  # Blue color for gui
+            '╚': '\x1b[34m',  # Blue color for gui
             '═': '\x1b[34m',
             '║': '\x1b[34m',
             '╝': '\x1b[34m',
             '╗': '\x1b[34m',
             '╔': '\x1b[34m',
-            # You can add more mappings for different characters here
+            # More mappings for different characters here
         }
-    }
+    },
+    'player_inventory': {
+        'gui': [
+            "╔═PLAYER═╗",
+            "║        ║",
+            "║        ║",
+            "║        ║",
+            "║        ║",
+            "╚═INV════╝",
+        ],
+        'colors': {
+            '╚': '\x1b[37m',  # Blue color for gui
+            '═': '\x1b[37m',
+            '║': '\x1b[37m',
+            '╝': '\x1b[37m',
+            '╗': '\x1b[37m',
+            '╔': '\x1b[37m',
+            # More mappings for different characters here
+        }
+    },
 }

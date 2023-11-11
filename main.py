@@ -6,12 +6,20 @@ from gameloop import GameLoop
 from world import WORLD
 
 import sys
-import termios
+import termios # Does not work on windows. 
 
 player = {}
 
 def main():
-    me = Player(1,1,'@','\x1b[32m')
+    me = Player(1,1,'@','\x1b[32m', {'bean': {
+        'name': 'Bean',
+        'id': 1,
+        'color': '\x1b[34m',
+        'quantity': 1,
+        'description': 'A test item.',
+        'price': 3,
+        'bought_price': 3,
+    }})
     return me
 
 # Hide user input to the terminal / thanks Mr.GPT (Not necessary for game function, but looks nicer.)

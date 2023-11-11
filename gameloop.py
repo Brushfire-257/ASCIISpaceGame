@@ -18,6 +18,8 @@ class GameLoop():
         self.camera = camera
         self.rooms = rooms
         self.exit_game = 0
+        self.gui_open = 0
+        self.player_inventory_gui_open = 0
         keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release).start()
     
     def on_key_release(self, key):
@@ -32,22 +34,30 @@ class GameLoop():
                 self.exit_game = 1
             return
         # Regular key handling
-        if key.char == "a":
-            self.player_movement('right', Camera, self.player)
-        elif key.char == "d":
-            self.player_movement('left', Camera, self.player)
-        elif key.char == 'w':
-            self.player_movement('up', Camera, self.player)
-        elif key.char == 's':
-            self.player_movement('down', Camera, self.player)
+        if key.char == "a" and not self.gui_open:
+            self.player_movement('right')
+        elif key.char == "d" and not self.gui_open:
+            self.player_movement('left')
+        elif key.char == 'w' and not self.gui_open:
+            self.player_movement('up')
+        elif key.char == 's' and not self.gui_open:
+            self.player_movement('down')
+        elif key.char == 'i':
+            if not self.gui_open and not self.player_inventory_gui_open:
+                self.gui_open = 1
+                self.player_inventory_gui_open = 1
+            else:
+                self.gui_open = 0
+                self.player_inventory_gui_open = 0
 
     def run_game(self):
         print('\x1b[?25l', end="") # Hides the Cursor!
     # Runs game loop here, continuously checking for keypresses
         while True:
             if self.exit_game == 1:
+                os.system('cls' if os.name=='nt' else 'clear')
                 break
-            #self.print_screen()
+            self.print_screen()
 
     def draw_map_layer(self, room_name):
         room = WORLD.get(room_name, {})
@@ -123,13 +133,59 @@ class GameLoop():
 
     def print_screen(self):
         clear()
-        for row in self.overwrite_render(self.draw_player_layer(self.draw_map_layer("room1")), 'gui1'):
-        #for row in self.draw_player_layer(self.draw_map_layer("room1")):
-            print("".join(row))
-
+        if self.gui_open == 0:
+            for row in self.overwrite_render(self.draw_player_layer(self.draw_map_layer("room1")), 'gui1'):
+            #for row in self.draw_player_layer(self.draw_map_layer("room1")):
+                print("".join(row))
+        clear()
+        # If there is a gui open, check what it is and render it.
+        if self.player_inventory_gui_open == 1:
+            for row in self.player_inventory_renderer():
+            #for row in self.draw_player_layer(self.draw_map_layer("room1")):
+                print("".join(row))
         return
+
+    def render_gui_base(self, gui_name): # Similar to the map render function, just without camera movement.
+        gui_info = GUI.get(gui_name, {})
+        gui = gui_info.get('gui', [])
+        gui_colors = gui_info.get('colors', {})
+
+        rendered_area = []
+
+        for y in range(self.camera.screen_height):
+            row = []
+            for x in range(self.camera.screen_width):
+                if 0 <= y < len(gui) and 0 <= x < len(gui[y]):
+                    char = gui[y][x]
+                    color = gui_colors.get(char, '\x1b[0m')  # Default color if character not found
+                    row.append(f"{color}{char}{self.camera.reset_color}")
+                else:
+                    row.append(' ')  # Display empty space for areas outside the gui
+            rendered_area.append(row)
+        return rendered_area
     
-    def player_movement(self, direction, camera, player):
+    def remove_dictionary(self, main_dictionary, id): # Removes a dictionary from a dictionary
+        new_dictionary = [i for i in main_dictionary if not (i['id'] == id)]
+        return new_dictionary
+    
+    def overwrite_gui(self, input_gui, x, y, overwrite_string):
+        # Enture coordinates are within the gui
+        if 0 <= y < len(input_gui) and 0 <= x < len(input_gui[y]):
+            # Check that the string can fit in the area
+            if x + len(overwrite_string) <= len(input_gui[y]):
+                input_gui[y][x:x + len(overwrite_string)] = list(overwrite_string)
+        return input_gui
+    
+    def player_inventory_renderer(self):
+        gui_base = self.render_gui_base('player_inventory')
+
+        print(self.player.inventory)
+        for items in self.player.inventory:
+            print(items)
+            gui_base = self.overwrite_gui(gui_base, 1, items[1] + 1, self.player.inventory[items])
+        return gui_base
+    
+    def player_movement(self, direction):
         if(direction == 'up'):
             move_by = (0, -1)
         elif(direction == 'down'):
@@ -145,7 +201,7 @@ class GameLoop():
         colisions = room.get('colisions', [])
 
         # check for collisions
-        char = map[player.y + move_by[1]][player.x - move_by[0]]
+        char = map[self.player.y + move_by[1]][self.player.x - move_by[0]]
         if colisions.get(char) == 'player':
             return
 
@@ -157,7 +213,6 @@ class GameLoop():
         self.player.y += move_by[1]
 
         self.camera_controller()
-        self.print_screen()
         
         return
 
