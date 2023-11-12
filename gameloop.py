@@ -179,10 +179,8 @@ class GameLoop():
     def player_inventory_renderer(self):
         gui_base = self.render_gui_base('player_inventory')
 
-        print(self.player.inventory)
         for items in self.player.inventory:
-            print(items)
-            gui_base = self.overwrite_gui(gui_base, 1, items[1] + 1, self.player.inventory[items])
+            gui_base = self.overwrite_gui(gui_base, 1, self.player.inventory[items]['id'], self.player.inventory[items]['name'])
         return gui_base
     
     def player_movement(self, direction):
