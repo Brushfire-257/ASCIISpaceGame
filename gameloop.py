@@ -74,7 +74,7 @@ class GameLoop():
                     color = colors.get(char, '\x1b[0m')  # Default color if character not found
                     row.append(f"{color}{char}{self.camera.reset_color}")
                 else:
-                    row.append(' ')  # Display empty space for areas outside the map
+                    row.append('0')  # Display character for areas outside the map
             rendered_area.append(row)
         return rendered_area
     
@@ -179,8 +179,10 @@ class GameLoop():
     def player_inventory_renderer(self):
         gui_base = self.render_gui_base('player_inventory')
 
+        i = 0
         for items in self.player.inventory:
-            gui_base = self.overwrite_gui(gui_base, 1, self.player.inventory[items]['id'], self.player.inventory[items]['name'])
+            gui_base = self.overwrite_gui(gui_base, 1, i+1, self.player.inventory[items]['name'])
+            i += 1
         return gui_base
     
     def player_movement(self, direction):

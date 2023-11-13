@@ -25,13 +25,17 @@ WORLD = {
         'map': [
             "#####",
             "#_#_#",
-            "#_#_#",
+            "#___#",
             "#####",
         ],
         'colors': {
             '#': '\x1b[32m',  # Green color for walls
             '_': '\x1b[34m',  # Blue color for underscores
             # You can add more mappings for different characters here
+        },
+        'colisions': {
+            '#': 'player',  # Colision layer
+            # Other collisions here:
         }
     },
     # Add more rooms and their map data here
@@ -40,12 +44,18 @@ WORLD = {
 GUI = {
     'gui1': {
         'gui': [
-            "╔════════╗",
-            "║        ║",
-            "║        ║",
-            "║        ║",
-            "║        ║",
-            "╚════════╝",
+            "╔═══════════════════════════════════╗",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "╚═══════════════════════════════════╝",
         ],
         'colors': {
             '╚': '\x1b[34m',  # Blue color for gui

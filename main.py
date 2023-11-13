@@ -13,7 +13,6 @@ player = {}
 def main():
     me = Player(1,1,'@','\x1b[32m', {'bean': {
         'name': 'Bean',
-        'id': 1,
         'color': '\x1b[34m',
         'quantity': 1,
         'description': 'A test item.',
@@ -31,7 +30,7 @@ termios.tcsetattr(fd, termios.TCSANOW, new_attributes)
 
 
 player = main()
-camera = Camera(1,1,10,6)
+camera = Camera(1,1,40,12)
 
 game = GameLoop(player, camera, WORLD)
 game.run_game()

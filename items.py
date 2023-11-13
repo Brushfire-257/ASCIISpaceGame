@@ -3,7 +3,6 @@
 ITEMS = {
     'bean': {
         'name': 'Bean',
-        'id': 1,
         'color': '\x1b[34m',
         'quantity': 1,
         'description': 'A test item.',
@@ -12,7 +11,6 @@ ITEMS = {
     },
     'butter': {
         'name': 'Butter',
-        'id': 2,
         'color': '\x1b[33m',
         'quantity': 1,
         'description': 'Another test item.',
