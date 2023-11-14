@@ -16,10 +16,22 @@ WORLD = {
             '#': '\x1b[33m',  # Green color for walls
             # You can add more mappings for different characters here
         },
-        'colisions': {
-            '#': 'player',  # Colision layer
+        'collisions': {
+            '#': 'player',  # Collision layer
             # Other collisions here:
-        }
+        },
+        'chests': {
+            (5,4): {
+                'items': {'butter': {
+        'name': 'Butter',
+        'color': '\x1b[33m',
+        'quantity': 1,
+        'description': 'Another test item.',
+        'price': 4,
+        'bought_price': 4,},
+            }
+            },
+        },
     },
     'room2': {
         'map': [
@@ -69,12 +81,43 @@ GUI = {
     },
     'player_inventory': {
         'gui': [
-            "╔═PLAYER═╗",
-            "║        ║",
-            "║        ║",
-            "║        ║",
-            "║        ║",
-            "╚═INV════╝",
+            "╔═PLAYER═INVENTORY══════════════════╗",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "║                                   ║",
+            "╚═══════════════════════════════════╝",
+        ],
+        'colors': {
+            '╚': '\x1b[37m',  # Blue color for gui
+            '═': '\x1b[37m',
+            '║': '\x1b[37m',
+            '╝': '\x1b[37m',
+            '╗': '\x1b[37m',
+            '╔': '\x1b[37m',
+            # More mappings for different characters here
+        }
+    },
+    'chest_gui': {
+        'gui': [
+            "╔═CHEST════════════╦═YOU════════════╗",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "║                  ║                ║",
+            "╚══════════════════╩════════════════╝",
         ],
         'colors': {
             '╚': '\x1b[37m',  # Blue color for gui

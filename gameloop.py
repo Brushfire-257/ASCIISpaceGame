@@ -20,6 +20,7 @@ class GameLoop():
         self.exit_game = 0
         self.gui_open = 0
         self.player_inventory_gui_open = 0
+        self.chest_inventory_gui_open = 0
         keyboard.Listener(on_press=self.on_key_press, on_release=self.on_key_release).start()
     
     def on_key_release(self, key):
@@ -49,6 +50,13 @@ class GameLoop():
             else:
                 self.gui_open = 0
                 self.player_inventory_gui_open = 0
+        elif key.char == 'p':
+            if not self.gui_open and not self.chest_inventory_gui_open:
+                self.gui_open = 1
+                self.chest_inventory_gui_open = 1
+            else:
+                self.gui_open = 0
+                self.chest_inventory_gui_open = 0
 
     def run_game(self):
         print('\x1b[?25l', end="") # Hides the Cursor!
@@ -143,6 +151,9 @@ class GameLoop():
             for row in self.player_inventory_renderer():
             #for row in self.draw_player_layer(self.draw_map_layer("room1")):
                 print("".join(row))
+        if self.chest_inventory_gui_open == 1:
+            for row in self.chest_inventory_renderer():
+                print("".join(row))
         return
 
     def render_gui_base(self, gui_name): # Similar to the map render function, just without camera movement.
@@ -185,6 +196,16 @@ class GameLoop():
             i += 1
         return gui_base
     
+    def chest_inventory_renderer(self):
+        gui_base = self.render_gui_base('chest_gui')
+
+        i = 0
+        for items in self.player.inventory:
+            gui_base = self.overwrite_gui(gui_base, 20, i+1, self.player.inventory[items]['name'])
+            i += 1
+        i = 0
+        return gui_base
+    
     def player_movement(self, direction):
         if(direction == 'up'):
             move_by = (0, -1)
@@ -198,11 +219,11 @@ class GameLoop():
         #init but butter
         room = WORLD.get("room1", {})
         map = room.get('map', [])
-        colisions = room.get('colisions', [])
+        collisions = room.get('collisions', [])
 
         # check for collisions
         char = map[self.player.y + move_by[1]][self.player.x - move_by[0]]
-        if colisions.get(char) == 'player':
+        if collisions.get(char) == 'player':
             return
 
         # debug
