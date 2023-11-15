@@ -1,11 +1,12 @@
 # Will contain a class for all the player atributes. Changing to contain more classes...
 
 class Player:
-    def __init__(self, x, y, char, color, inventory = {}):
+    def __init__(self, x, y, char, color, room, inventory = {}):
         self.x = x
         self.y = y
         self.char = char
         self.color = color
+        self.room = room
         self.inventory = inventory
 
 class Camera:

@@ -11,7 +11,7 @@ import termios # Does not work on windows.
 player = {}
 
 def main():
-    me = Player(1,1,'@','\x1b[32m', {'bean': {
+    me = Player(1,1,'@','\x1b[32m', 'room1', {'bean': {
         'name': 'Bean',
         'color': '\x1b[34m',
         'quantity': 1,

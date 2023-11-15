@@ -3,7 +3,7 @@
 from pynput import keyboard
 import cmd
 from player import Player, Camera
-from world import WORLD, GUI
+from world import *
 import os
 
 def clear():
@@ -44,14 +44,14 @@ class GameLoop():
         elif key.char == 's' and not self.gui_open:
             self.player_movement('down')
         elif key.char == 'i':
-            if not self.gui_open and not self.player_inventory_gui_open:
+            if self.gui_open == 0 and not self.player_inventory_gui_open:
                 self.gui_open = 1
                 self.player_inventory_gui_open = 1
             else:
                 self.gui_open = 0
                 self.player_inventory_gui_open = 0
         elif key.char == 'p':
-            if not self.gui_open and not self.chest_inventory_gui_open:
+            if self.gui_open == 0 and not self.chest_inventory_gui_open:
                 self.gui_open = 1
                 self.chest_inventory_gui_open = 1
             else:
