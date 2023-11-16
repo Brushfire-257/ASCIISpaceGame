@@ -205,6 +205,29 @@ class GameLoop():
             i += 1
         i = 0
         return gui_base
+
+    def put_item_in_chest(self, item, chest_x, chest_y):
+        item_in_question = self.player.inventory.get(item)
+        if item_in_question:
+            if (chest_x, chest_y) in self.rooms[self.player.room]['chests']:
+                chest = self.rooms[self.player.room]['chests'][(chest_x, chest_y)]
+                if item in chest['items']:
+                    chest['items'][item]['quantity'] += item['quantity']
+                else:
+                    chest['items'][item] = item.copy()
+                del self.player.inventory[item]
+        return
+    
+    def item_from_chest_to_player(self, item, chest_x, chest_y):
+        if (chest_x, chest_y) in self.rooms[self.player.room]['chests']:
+            item_in_quesion = self.rooms[self.player.room]['chests'][(chest_x, chest_y)][item]
+            if item_in_quesion:
+                if item in self.player.inventory:
+                    self.player.inventory['quantity'] += self.rooms[self.player.room]['chests'][(chest_x, chest_y)][item]['quantity']
+                else:
+                    self.player.inventory.append(self.rooms[self.player.room]['chests'][(chest_x, chest_y)][item])
+                self.rooms[self.player.room]['chests'][(chest_x, chest_y)].pop(item)
+        return
     
     def player_movement(self, direction):
         if(direction == 'up'):

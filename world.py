@@ -14,7 +14,7 @@ WORLD = {
             '.': '\x1b[37m',  # Grey color for dots
             '_': '\x1b[34m',  # Blue color for underscores
             '#': '\x1b[33m',  # Green color for walls
-            # You can add more mappings for different characters here
+            # More mappings for different characters here:
         },
         'collisions': {
             '#': 'player',  # Collision layer
@@ -31,6 +31,7 @@ WORLD = {
         'bought_price': 4,},
             }
             },
+            # Another chest here:
         },
     },
     'room2': {
@@ -50,7 +51,7 @@ WORLD = {
             # Other collisions here:
         }
     },
-    # Add more rooms and their map data here
+    # Add more rooms and their map data here:
 }
 
 GUI = {
